@@ -1,0 +1,92 @@
+{
+  "structs": [{
+      "name": "remove",
+      "base": "",
+      "fields": [
+        {"name":"user", "type":"account_name"},
+        {"name":"game", "type":"name"}
+      ]
+    },{
+      "name": "removeall",
+      "base": "",
+      "fields": [
+        {"name":"user", "type":"account_name"}
+      ]
+    },{
+      "name": "create",
+      "base": "",
+      "fields": [
+        {"name":"user", "type":"account_name"},
+        {"name":"game", "type":"name"},
+        {"name":"seed", "type":"uint32"}
+      ]
+    },{
+      "name": "step",
+      "base": "",
+      "fields": [
+        {"name":"user", "type":"account_name"},
+        {"name":"game", "type":"name"}
+      ]
+    },{
+      "name": "board",
+      "base": "",
+      "fields": [
+        {"name":"game", "type":"name"},
+        {"name":"row00", "type":"string"},
+        {"name":"row01", "type":"string"},
+        {"name":"row02", "type":"string"},
+        {"name":"row03", "type":"string"},
+        {"name":"row04", "type":"string"},
+        {"name":"row05", "type":"string"},
+        {"name":"row06", "type":"string"},
+        {"name":"row07", "type":"string"},
+        {"name":"row08", "type":"string"},
+        {"name":"row09", "type":"string"},
+        {"name":"row10", "type":"string"},
+        {"name":"row11", "type":"string"},
+        {"name":"row12", "type":"string"},
+        {"name":"row13", "type":"string"},
+        {"name":"row14", "type":"string"},
+        {"name":"row15", "type":"string"},
+        {"name":"row16", "type":"string"},
+        {"name":"row17", "type":"string"},
+        {"name":"row18", "type":"string"},
+        {"name":"row19", "type":"string"},
+        {"name":"row20", "type":"string"},
+        {"name":"row21", "type":"string"},
+        {"name":"row22", "type":"string"},
+        {"name":"row23", "type":"string"},
+        {"name":"row24", "type":"string"},
+        {"name":"row25", "type":"string"},
+        {"name":"row26", "type":"string"},
+        {"name":"row27", "type":"string"},
+        {"name":"row28", "type":"string"},
+        {"name":"row29", "type":"string"},
+        {"name":"row30", "type":"string"},
+        {"name":"row31", "type":"string"}
+      ]
+    }
+  ],
+  "actions": [{
+      "name": "create",
+      "type": "create"
+    },{
+      "name": "remove",
+      "type": "remove"
+    },{
+      "name": "removeall",
+      "type": "removeall"
+    },{
+      "name": "step",
+      "type": "step"
+    }
+  ],
+  "tables": [{
+      "name": "boards",
+      "type": "board",
+      "index_type": "i64",
+      "key_names" : ["game"],
+      "key_types" : ["name"]
+    }
+  ]
+}
