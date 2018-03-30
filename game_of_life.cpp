@@ -18,7 +18,7 @@ struct board {
 struct rnd {
     uint32_t seed{1};
     uint32_t operator()() {
-        seed = (16807 * seed) % 2147483647u;
+        seed = (16807ull * seed) % 2147483647u;
         return seed;
     }
 };
