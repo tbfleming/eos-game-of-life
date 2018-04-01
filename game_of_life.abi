@@ -18,6 +18,8 @@
       "fields": [
         {"name":"user", "type":"account_name"},
         {"name":"game", "type":"name"},
+        {"name":"num_rows", "type":"uint32"},
+        {"name":"num_cols", "type":"uint32"},
         {"name":"seed", "type":"uint32"}
       ]
     },{

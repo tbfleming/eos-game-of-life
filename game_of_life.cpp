@@ -5,8 +5,6 @@
 using namespace eosio;
 using namespace std;
 
-static const int size = 32;
-
 // board content is in strings to look reasonable in json
 struct board {
     uint64_t game;
@@ -23,25 +21,29 @@ struct rnd {
     }
 };
 
-void randomize(board& b, uint32_t seed) {
-    b.rows.resize(size);
+void randomize(board& b, uint32_t num_rows, uint32_t num_cols, uint32_t seed) {
+    b.rows.resize(num_rows);
     rnd r{seed};
     for (auto& row : b.rows) {
         row.clear();
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < num_cols; ++i)
             row.push_back((r() & 1) ? '*' : ' ');
     }
 }
 
 void step(board& b) {
-    eosio_assert(b.rows.size() == size, "game is corrupt");
+    int num_rows = b.rows.size();
+    eosio_assert(num_rows >= 3, "game is corrupt");
+    int num_cols = b.rows[0].size();
+    eosio_assert(num_cols >= 3, "game is corrupt");
     for (auto& row : b.rows)
-        eosio_assert(row.size() == size, "game is corrupt");
+        eosio_assert(row.size() == num_cols, "game is corrupt");
     auto old = b;
-    for (int r = 0; r < size; ++r) {
-        for (int c = 0; c < size; ++c) {
+    for (int r = 0; r < num_rows; ++r) {
+        for (int c = 0; c < num_cols; ++c) {
             auto alive = [&](int dr, int dc) {
-                return old.rows[(r + dr) % size][(c + dc) % size] != ' ';
+                return old.rows[(r + dr + num_rows) % num_rows]
+                               [(c + dc + num_cols) % num_cols] != ' ';
             };
             auto neighbors = alive(-1, -1) + alive(-1, 0) + alive(-1, 1) +
                              alive(0, -1) + alive(0, 1) + alive(1, -1) +
@@ -78,14 +80,19 @@ struct gameoflife : contract {
             db_remove_i64(it);
     }
 
-    void create(account_name user, name game, uint32_t seed) {
+    void create(account_name user, name game, uint32_t num_rows,
+                uint32_t num_cols, uint32_t seed) {
+        eosio_assert(num_rows >= 3 && num_rows <= 100,
+                     "num_rows out of range [3, 100]");
+        eosio_assert(num_cols >= 3 && num_cols <= 100,
+                     "num_cols out of range [3, 100]");
         require_auth(user);
         remove(user, game);
 
         multi_index<N(boards), board> boards(_self, user);
         boards.emplace(user, [&](auto& b) {
             b.game = game;
-            randomize(b, seed);
+            randomize(b, num_rows, num_cols, seed);
         });
     }
 
