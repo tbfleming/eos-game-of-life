@@ -10,7 +10,7 @@ static const int size = 32;
 // board content is in strings to look reasonable in json
 struct board {
     uint64_t game;
-    string rows[size];
+    vector<string> rows;
     uint64_t primary_key() const { return game; }
 };
 
@@ -24,6 +24,7 @@ struct rnd {
 };
 
 void randomize(board& b, uint32_t seed) {
+    b.rows.resize(size);
     rnd r{seed};
     for (auto& row : b.rows) {
         row.clear();
@@ -33,6 +34,7 @@ void randomize(board& b, uint32_t seed) {
 }
 
 void step(board& b) {
+    eosio_assert(b.rows.size() == size, "game is corrupt");
     for (auto& row : b.rows)
         eosio_assert(row.size() == size, "game is corrupt");
     auto old = b;
